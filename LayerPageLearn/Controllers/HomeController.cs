@@ -8,20 +8,24 @@ using LayerPageLearn.Models;
 using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using BuissnessLayer;
+using PresentationLayer;
+using PresentationLayer.Models;
 
 namespace LayerPageLearn.Controllers
 {
     public class HomeController : Controller
     {
         private DataManager _datamanager;
+        private ServicesManager _servicesmanager;
         public HomeController(DataManager content)
         {
             _datamanager = content;
+            _servicesmanager = new ServicesManager(_datamanager);
         }
         public IActionResult Index()
         {
-            var model = _datamanager.Directorys.GetAllDirectorys(true).ToList();
-            return View(model);
+            List<DirectoryViewModel> _dirs = _servicesmanager.Directorys.GetDirectoryesList();
+            return View(_dirs);
         }
 
         public IActionResult Privacy()
